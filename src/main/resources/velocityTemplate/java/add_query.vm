@@ -1,0 +1,26 @@
+package ${package}.query;
+import lombok.Data;
+import java.io.Serializable;
+import io.swagger.annotations.ApiModelProperty;
+#if( $hasDate )
+import java.util.Date;
+#end
+#if( $hasBigDecimal )
+import java.math.BigDecimal;
+#end
+/**
+ * ${classComments} 新增
+ * @author $author
+ * @date $date
+ */
+@Data
+public class ${className}AddQuery implements Serializable {
+#foreach($field in $fields)
+    #if($field.fName != "id")
+
+    @ApiModelProperty(value = "${field.fExplain}")
+    private ${field.fType} ${field.fName};
+    #end
+#end
+
+}

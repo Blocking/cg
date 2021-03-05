@@ -1,0 +1,30 @@
+package ${package}.query;
+import lombok.Data;
+import java.io.Serializable;
+import io.swagger.annotations.ApiModelProperty;
+#if( $hasDate )
+import java.util.Date;
+#end
+#if( $hasBigDecimal )
+import java.math.BigDecimal;
+#end
+import javax.validation.constraints.NotNull;
+/**
+ * ${classComments} 编辑
+ * @author $author
+ * @date $date
+ */
+@Data
+public class ${className}EditQuery implements Serializable {
+#foreach($field in $fields)
+
+    #if($field.fName == "id")
+    @NotNull(message = "id不能为空")
+    @ApiModelProperty(value = "${field.fExplain}")
+    private ${field.fType} ${field.fName};
+    #else
+    @ApiModelProperty(value = "${field.fExplain}")
+    private ${field.fType} ${field.fName};
+    #end
+#end
+}

@@ -1,0 +1,62 @@
+package ${package}.converter;
+#set( $mapper = ${lowerClassName}+"Mapper")
+#set( $Mapper = ${className}+"Mapper")
+#set( $convertor = ${lowerClassName}+"Converter")
+#set( $Convertor = ${className}+"Converter")
+#set( $Dto = ${className}+"DTO")
+#set( $addQuery = ${className}+"AddQuery")
+#set( $editQuery = ${className}+"EditQuery")
+import ${package}.model.${className};
+import ${package}.dto.${className}DTO;
+import ${package}.query.${className}AddQuery;
+import ${package}.query.${className}EditQuery;
+import java.util.Date;
+import org.springframework.stereotype.Component;
+
+/**
+ * $classComments
+ * @author $author
+ * @date $date
+ */
+@Component
+public class ${className}Converter extends AbstractConvertor<${className}, $Dto> {
+
+    @Override
+    public $Dto toDTO(${className} model) {
+        $Dto dto = new $Dto();
+    #foreach($field in $fields)
+        #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
+        dto.set${methodName}(model.get${methodName}());
+    #end
+        return dto;
+    }
+
+    public ${className} toAddModel($addQuery addQuery) {
+        ${className} model = new ${className}();
+    #foreach($field in $fields)
+        #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
+        #if($field.fName =="id" || $field.fName == "updateTime")
+        #elseif($field.fName == "createTime")
+        model.set${methodName}(new Date());
+        #else
+        model.set${methodName}(addQuery.get${methodName}());
+        #end
+    #end
+        return model;
+    }
+
+    public ${className} toEditModel($editQuery editQuery) {
+        ${className} model = new ${className}();
+    #foreach($field in $fields)
+        #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
+        #if($field.fName == "createTime")
+        #elseif($field.fName == "updateTime")
+        model.set${methodName}(new Date());
+        #else
+        model.set${methodName}(editQuery.get${methodName}());
+        #end
+    #end
+        return model;
+    }
+
+}

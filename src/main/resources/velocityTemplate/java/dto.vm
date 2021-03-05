@@ -1,0 +1,23 @@
+package ${package}.dto;
+import lombok.Data;
+import java.io.Serializable;
+import io.swagger.annotations.ApiModelProperty;
+#if( $hasDate )
+import java.util.Date;
+#end
+#if( $hasBigDecimal )
+import java.math.BigDecimal;
+#end
+/**
+ * $classComments
+ * @author $author
+ * @date $date
+ */
+@Data
+public class ${className}DTO implements Serializable {
+    #foreach($field in $fields)
+
+    @ApiModelProperty(value = "${field.fExplain}")
+    private ${field.fType} ${field.fName};
+    #end
+}

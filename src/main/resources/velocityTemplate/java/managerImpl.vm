@@ -1,0 +1,79 @@
+package ${package}.manager.impl;
+#set( $mapper = ${lowerClassName}+"Mapper")
+#set( $Mapper = ${className}+"Mapper")
+#set( $convertor = ${lowerClassName}+"Converter")
+#set( $Convertor = ${className}+"Converter")
+#set( $Dto = ${className}+"DTO")
+#set( $addQuery = ${className}+"AddQuery")
+#set( $editQuery = ${className}+"EditQuery")
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import ${package}.model.${className};
+import ${package}.dto.${className}DTO;
+import ${package}.query.${className}AddQuery;
+import ${package}.query.${className}EditQuery;
+import ${package}.query.${className}PageQuery;
+#if($oldProject)
+import ${package}.dao.$Mapper;
+#else
+import ${package}.mapper.$Mapper;
+#end
+import ${package}.converter.$Convertor;
+import ${package}.manager.${className}Manager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * $classComments
+ * @author $author
+ * @date $date
+ */
+@Component
+public class ${className}ManagerImpl implements ${className}Manager {
+
+    private final $Mapper $mapper;
+
+    private final $Convertor $convertor;
+
+    @Autowired
+    public ${className}ManagerImpl($Mapper $mapper,$Convertor $convertor) {
+        this.$mapper = $mapper;
+        this.$convertor = $convertor;
+    }
+
+    @Override
+    public PageInfo<$Dto> searchPage(${className}PageQuery pageQuery) {
+        final PageInfo<${className}> pageInfo = PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize()).doSelectPageInfo(() ->
+        this.${mapper}.findAllByNameLike(pageQuery.getName()));
+        final PageInfo<$Dto> dtoPageInfo = this.${convertor}.toPageDTO(pageInfo);
+        return dtoPageInfo;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void add($addQuery addQuery) {
+        final ${className} model = this.${convertor}.toAddModel(addQuery);
+        this.${mapper}.insertSelective(model);
+    }
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteById(Long id) {
+        this.${mapper}.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void update($editQuery editQuery) {
+        final ${className} model = this.${convertor}.toEditModel(editQuery);
+        this.${mapper}.updateByPrimaryKeySelective(model);
+    }
+
+    @Override
+    public $Dto search(Long id) {
+        final ${className} model = this.${mapper}.selectByPrimaryKey(id);
+        return this.${convertor}.toDTO(model);
+    }
+
+
+}

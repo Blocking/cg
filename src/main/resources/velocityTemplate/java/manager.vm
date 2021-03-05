@@ -1,0 +1,51 @@
+package ${package}.manager;
+
+#set( $Dto = ${className}+"DTO")
+#set( $addQuery = ${className}+"AddQuery")
+#set( $editQuery = ${className}+"EditQuery")
+#set( $pageQuery = ${className}+"PageQuery")
+import com.github.pagehelper.PageInfo;
+import ${package}.dto.$Dto;
+import ${package}.query.$addQuery;
+import ${package}.query.$editQuery;
+import ${package}.query.$pageQuery;
+
+/**
+ * $classComments
+ * @author $author
+ * @date $date
+ */
+public interface ${className}Manager {
+    /**
+     * 分页查询
+     * @param pageQuery pageQuery
+     * @return page信息
+     */
+    PageInfo<$Dto> searchPage($pageQuery pageQuery);
+
+    /**
+     * 新增
+     * @param addQuery 新增结构体
+     */
+    void add($addQuery addQuery);
+
+    /**
+     * 删除
+     * @param id 主键id
+     */
+    void deleteById(Long id);
+
+    /**
+     * 修改
+     * @param editQuery 编辑结构体
+     */
+    void update($editQuery editQuery);
+
+    /**
+     * 查询
+     * @param id 主键id
+     * @return 信息
+     */
+    $Dto search(Long id);
+
+}

@@ -1,0 +1,65 @@
+package ${package}.api.impl;
+#set( $manager = ${lowerClassName}+"Manager")
+#set( $Manager = ${className}+"Manager")
+#set( $Dto = ${className}+"DTO")
+#set( $addQuery = ${className}+"AddQuery")
+#set( $editQuery = ${className}+"EditQuery")
+import com.github.pagehelper.PageInfo;
+import ${package}.dto.${className}DTO;
+import ${package}.query.${className}AddQuery;
+import ${package}.query.${className}EditQuery;
+import ${package}.query.${className}PageQuery;
+import ${package}.api.${className}Service;
+import ${package}.manager.${className}Manager;
+import com.ikongjian.commons.entity.Result;
+import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.DubboService;
+
+/**
+ * $classComments
+ * @author $author
+ * @date $date
+ */
+@Slf4j
+@DubboService
+public class ${className}ServiceImpl implements ${className}Service {
+
+    private final $Manager $manager;
+
+    @Autowired
+    public ${className}ServiceImpl($Manager $manager) {
+        this.$manager = $manager;
+    }
+
+    @Override
+    public Result<PageInfo<$Dto>> searchPage(${className}PageQuery pageQuery) {
+        final PageInfo<$Dto> dtoPageInfo = this.${manager}.searchPage(pageQuery);
+        return Result.success(dtoPageInfo);
+    }
+
+    @Override
+    public Result<Void> add($addQuery addQuery) {
+        this.${manager}.add(addQuery);
+        return Result.empty();
+    }
+    @Override
+    public Result<Void> deleteById(Long id) {
+        this.${manager}.deleteById(id);
+        return Result.empty();
+    }
+
+    @Override
+    public Result<Void> update($editQuery editQuery) {
+        this.${manager}.update(editQuery);
+        return Result.empty();
+    }
+
+    @Override
+    public Result<$Dto> search(Long id) {
+        final $Dto dto = this.${manager}.search(id);
+        return Result.success(dto);
+    }
+
+
+}
