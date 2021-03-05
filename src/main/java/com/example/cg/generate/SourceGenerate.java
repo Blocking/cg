@@ -3,10 +3,10 @@ package com.example.cg.generate;
 import com.example.cg.parse.ClassDocParse;
 import com.example.cg.bean.FieldEntry;
 import com.example.cg.bean.ModelClassDoc;
+import com.example.cg.template.*;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
@@ -41,6 +41,8 @@ public class SourceGenerate {
     final static String bigDecimal = "BigDecimal";
 
     private ModelClassDoc classDoc;
+
+    private TemplateProp prop;
 
     @Setter
     private Out out = Out.CONSOLE;
@@ -92,60 +94,11 @@ public class SourceGenerate {
             }
         });
         ctx.put("fields", fields);
+        prop = new TemplateProp();
+        prop.setVe(ve);
+        prop.setWritePath(writePath);
+        prop.setVelocityContext(ctx);
     }
-
-    public void generateController() {
-        System.out.println("///////////////////==Controller==//////////////////////////////");
-        Template template = ve.getTemplate("velocityTemplate/java/controller.vm");
-        merge(template,ctx, writePath +ctx.get("className")+"Controller.java");
-        System.out.println("///////////////////==Controller==//////////////////////////////");
-    }
-
-    public void generateService() {
-        System.out.println("///////////////////==Service==//////////////////////////////");
-        Template template = ve.getTemplate("velocityTemplate/java/service.vm");
-        merge(template,ctx, writePath +ctx.get("className")+"Service.java");
-
-        Template template1 = ve.getTemplate("velocityTemplate/java/serviceImpl.vm");
-        merge(template1,ctx, writePath +ctx.get("className")+"ServiceImpl.java");
-        System.out.println("///////////////////==Service==//////////////////////////////");
-    }
-
-    public void generateConverter() {
-        System.out.println("///////////////////==Converter==//////////////////////////////");
-        Template template = ve.getTemplate("velocityTemplate/java/converter.vm");
-        merge(template,ctx, writePath +ctx.get("className")+"Converter.java");
-        System.out.println("///////////////////==Converter==//////////////////////////////");
-    }
-    public void generateManager() {
-        System.out.println("///////////////////==Manager==//////////////////////////////");
-        Template template = ve.getTemplate("velocityTemplate/java/manager.vm");
-        merge(template,ctx, writePath +ctx.get("className")+"Manager.java");
-        Template template1 = ve.getTemplate("velocityTemplate/java/managerImpl.vm");
-        merge(template1,ctx, writePath +ctx.get("className")+"ManagerImpl.java");
-        System.out.println("///////////////////==Manager==//////////////////////////////");
-    }
-
-    public void generateQuery() {
-        System.out.println("///////////////////==Query==//////////////////////////////");
-        Template template = ve.getTemplate("velocityTemplate/java/edit_query.vm");
-        merge(template,ctx, writePath +ctx.get("className")+"EditQuery.java");
-
-        Template template1 = ve.getTemplate("velocityTemplate/java/add_query.vm");
-        merge(template1,ctx, writePath +ctx.get("className")+"AddQuery.java");
-
-        Template template2 = ve.getTemplate("velocityTemplate/java/page_query.vm");
-        merge(template2,ctx, writePath +ctx.get("className")+"PageQuery.java");
-        System.out.println("///////////////////==Query==//////////////////////////////");
-    }
-
-    public void generateDTO() {
-        System.out.println("///////////////////==DTO==//////////////////////////////");
-        Template template = ve.getTemplate("velocityTemplate/java/dto.vm");
-        merge(template,ctx, writePath +ctx.get("className")+"DTO.java");
-        System.out.println("///////////////////==DTO==//////////////////////////////");
-    }
-
 
     public VelocityEngine initVe() {
         VelocityEngine ve = new VelocityEngine();
@@ -156,47 +109,72 @@ public class SourceGenerate {
         return ve;
     }
 
-    public void merge(Template template, VelocityContext ctx, String path) {
-
-        switch (out){
-            case FILE:
-                try(PrintWriter writer =new PrintWriter(path)){
-                    template.merge(ctx, writer);
-                    writer.flush();
-                } catch (ResourceNotFoundException e) {
-                    e.printStackTrace();
-                } catch (MethodInvocationException e) {
-                    e.printStackTrace();
-                } catch (ParseErrorException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            case CONSOLE:
-                try(StringWriter writer = new StringWriter()){
-                    template.merge(ctx, writer);
-                    System.out.println(writer);
-                } catch (ResourceNotFoundException e) {
-                    e.printStackTrace();
-                } catch (MethodInvocationException e) {
-                    e.printStackTrace();
-                } catch (ParseErrorException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                break;
-            default:
-                throw new RuntimeException("未知的输出方式");
-        }
-
-
+    public void generateController() {
+        ControllerTemplateView controller  =  new ControllerTemplateView(prop);
+        merge(controller);
     }
 
+    public void generateService() {
+        ServiceTemplateView service = new ServiceTemplateView(prop);
+        merge(service);
+    }
 
+    public void generateConverter() {
+        ConvertorTemplateView convertor = new ConvertorTemplateView(prop);
+        merge(convertor);
+    }
+    public void generateManager() {
+        ManagerTemplateView manager = new ManagerTemplateView(prop);
+        merge(manager);
+    }
 
+    public void generateQuery() {
+        QueryTemplateView query = new QueryTemplateView(prop);
+        merge(query);
+    }
 
+    public void generateDTO() {
+        DtoTemplateView view = new DtoTemplateView(prop);
+        merge(view);
+    }
+
+    protected void merge(TemplateView templateView) {
+        templateView.getTemplateResource().forEach(template -> {
+            switch (out){
+                case FILE:
+                    try(PrintWriter writer =new PrintWriter(template.getWritePath())){
+                        template.merge(ctx, writer);
+                        writer.flush();
+                    } catch (ResourceNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (MethodInvocationException e) {
+                        e.printStackTrace();
+                    } catch (ParseErrorException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case CONSOLE:
+                    try(StringWriter writer = new StringWriter()){
+                        template.merge(ctx, writer);
+                        System.out.println(writer);
+                    } catch (ResourceNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (MethodInvocationException e) {
+                        e.printStackTrace();
+                    } catch (ParseErrorException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                default:
+                    throw new RuntimeException("未知的输出方式");
+            }
+        });
+
+    }
 
 
 }
