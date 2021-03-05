@@ -1,5 +1,8 @@
-package com.example.cg;
+package com.example.cg.generate;
 
+import com.example.cg.parse.ClassDocParse;
+import com.example.cg.bean.FieldEntry;
+import com.example.cg.bean.ModelClassDoc;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -26,23 +29,23 @@ import java.util.List;
 @Slf4j
 public class SourceGenerate {
 
-    VelocityContext ctx ;
+    private VelocityContext ctx ;
 
-     VelocityEngine ve;
+    private VelocityEngine ve;
 
     @Setter
     private String writePath = "/tmp/";
 
-    final String date = "Date";
+    final static String date = "Date";
 
-    final String bigDecimal = "BigDecimal";
+    final static String bigDecimal = "BigDecimal";
 
-    ModelClassDoc classDoc;
+    private ModelClassDoc classDoc;
 
     @Setter
     private Out out = Out.CONSOLE;
 
-    enum Out{
+    public enum Out{
         FILE,
         CONSOLE
     }
@@ -91,14 +94,14 @@ public class SourceGenerate {
         ctx.put("fields", fields);
     }
 
-    private void generateController() {
-        System.out.println("///////////////////==CONTROLLER==//////////////////////////////");
+    public void generateController() {
+        System.out.println("///////////////////==Controller==//////////////////////////////");
         Template template = ve.getTemplate("velocityTemplate/java/controller.vm");
         merge(template,ctx, writePath +ctx.get("className")+"Controller.java");
-        System.out.println("///////////////////==CONTROLLER==//////////////////////////////");
+        System.out.println("///////////////////==Controller==//////////////////////////////");
     }
 
-    private void generateService() {
+    public void generateService() {
         System.out.println("///////////////////==Service==//////////////////////////////");
         Template template = ve.getTemplate("velocityTemplate/java/service.vm");
         merge(template,ctx, writePath +ctx.get("className")+"Service.java");
@@ -108,13 +111,13 @@ public class SourceGenerate {
         System.out.println("///////////////////==Service==//////////////////////////////");
     }
 
-    private void generateConverter() {
+    public void generateConverter() {
         System.out.println("///////////////////==Converter==//////////////////////////////");
         Template template = ve.getTemplate("velocityTemplate/java/converter.vm");
         merge(template,ctx, writePath +ctx.get("className")+"Converter.java");
         System.out.println("///////////////////==Converter==//////////////////////////////");
     }
-    private void generateManager() {
+    public void generateManager() {
         System.out.println("///////////////////==Manager==//////////////////////////////");
         Template template = ve.getTemplate("velocityTemplate/java/manager.vm");
         merge(template,ctx, writePath +ctx.get("className")+"Manager.java");
@@ -123,7 +126,7 @@ public class SourceGenerate {
         System.out.println("///////////////////==Manager==//////////////////////////////");
     }
 
-    private void generateQuery() {
+    public void generateQuery() {
         System.out.println("///////////////////==Query==//////////////////////////////");
         Template template = ve.getTemplate("velocityTemplate/java/edit_query.vm");
         merge(template,ctx, writePath +ctx.get("className")+"EditQuery.java");
@@ -136,7 +139,7 @@ public class SourceGenerate {
         System.out.println("///////////////////==Query==//////////////////////////////");
     }
 
-    private void generateDTO() {
+    public void generateDTO() {
         System.out.println("///////////////////==DTO==//////////////////////////////");
         Template template = ve.getTemplate("velocityTemplate/java/dto.vm");
         merge(template,ctx, writePath +ctx.get("className")+"DTO.java");
@@ -192,19 +195,7 @@ public class SourceGenerate {
     }
 
 
-    public static void main(String[] args) {
-        final String modelClassName = "com.example.cg.bean.Example";
-        SourceGenerate sourceGenerate = new SourceGenerate(modelClassName);
-        sourceGenerate.setOut(Out.FILE);
-        //文件输出路径 默认是 tmp 下
-        sourceGenerate.setWritePath("/tmp");
-        sourceGenerate.generateDTO();
-//        generateQuery();
-//        generateConverter();
-//        generateManager();
-//        generateService();
-//        generateController();
-    }
+
 
 
 

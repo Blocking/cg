@@ -1,14 +1,14 @@
-package com.example.cg;
+package com.example.cg.parse;
+
+import com.example.cg.bean.FieldEntry;
+import com.example.cg.bean.ModelClassDoc;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author zhangxiaoyu
@@ -24,12 +24,6 @@ public class ClassDocParse {
     public ClassDocParse(String className) {
         this.className = className;
         init();
-    }
-
-    public static void main(String[] args) {
-        ClassDocParse classDocParse = new ClassDocParse("com.ikongjian.dim.model.UserBdInfo");
-        ModelClassDoc  modelClassDoc = classDocParse.parse();
-        System.out.println(modelClassDoc);
     }
 
     public ModelClassDoc parse() {
@@ -79,4 +73,11 @@ public class ClassDocParse {
         final String s = new String(bytes);
         return s.substring(s.indexOf("/**"));
     }
+
+    public static void main(String[] args) {
+        ClassDocParse classDocParse = new ClassDocParse("com.example.cg.bean.Example");
+        ModelClassDoc modelClassDoc = classDocParse.parse();
+        System.out.println(modelClassDoc);
+    }
+
 }

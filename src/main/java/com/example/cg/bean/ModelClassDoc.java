@@ -1,4 +1,4 @@
-package com.example.cg;
+package com.example.cg.bean;
 
 
 import lombok.Data;
