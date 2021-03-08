@@ -15,10 +15,10 @@ public class Demo {
         //文件输出路径 默认是 tmp 下
         sourceGenerate.setWritePath("/tmp");
         sourceGenerate.generateDTO();
-//        generateQuery();
-//        generateConverter();
-//        generateManager();
-//        generateService();
-//        generateController();
+        sourceGenerate.generateQuery();
+        sourceGenerate.generateConverter();
+        sourceGenerate.generateManager();
+        sourceGenerate.generateService();
+        sourceGenerate.generateController();
     }
 }

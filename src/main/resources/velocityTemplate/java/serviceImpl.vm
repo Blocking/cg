@@ -25,12 +25,8 @@ import org.apache.dubbo.config.annotation.DubboService;
 @DubboService
 public class ${className}ServiceImpl implements ${className}Service {
 
-    private final $Manager $manager;
-
     @Autowired
-    public ${className}ServiceImpl($Manager $manager) {
-        this.$manager = $manager;
-    }
+    private final $Manager $manager;
 
     @Override
     public Result<PageInfo<$Dto>> searchPage(${className}PageQuery pageQuery) {

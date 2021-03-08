@@ -32,15 +32,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class ${className}ManagerImpl implements ${className}Manager {
 
+    @Autowired
     private final $Mapper $mapper;
 
-    private final $Convertor $convertor;
-
     @Autowired
-    public ${className}ManagerImpl($Mapper $mapper,$Convertor $convertor) {
-        this.$mapper = $mapper;
-        this.$convertor = $convertor;
-    }
+    private final $Convertor $convertor;
 
     @Override
     public PageInfo<$Dto> searchPage(${className}PageQuery pageQuery) {
@@ -74,6 +70,5 @@ public class ${className}ManagerImpl implements ${className}Manager {
         final ${className} model = this.${mapper}.selectByPrimaryKey(id);
         return this.${convertor}.toDTO(model);
     }
-
 
 }
