@@ -18,11 +18,11 @@ public class QueryTemplateView extends AbstractTemplateView {
     @Override
     public List<TemplateResource> getTemplateResource() {
         List<TemplateResource> resources = new ArrayList<>();
-        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/edit_query.vm"))
+        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("edit_query.vm"))
                 .writePath(writePath + ctx.get("className") + "EditQuery.java").build();
-        final TemplateResource re1 = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/add_query.vm"))
+        final TemplateResource re1 = TemplateResource.builder().template(ve.getTemplate("add_query.vm"))
                 .writePath(writePath + ctx.get("className") + "AddQuery.java").build();
-        final TemplateResource re2 = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/page_query.vm"))
+        final TemplateResource re2 = TemplateResource.builder().template(ve.getTemplate("page_query.vm"))
                 .writePath(writePath + ctx.get("className") + "PageQuery.java").build();
         resources.add(re);
         resources.add(re1);

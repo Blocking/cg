@@ -18,7 +18,7 @@ public class ControllerTemplateView extends AbstractTemplateView {
     @Override
     public List<TemplateResource> getTemplateResource() {
         List<TemplateResource> resources = new ArrayList<>();
-        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/controller.vm"))
+        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("controller.vm"))
                 .writePath(writePath + ctx.get("className") + "Controller.java").build();
         resources.add(re);
         return resources;

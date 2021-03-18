@@ -18,9 +18,9 @@ public class ServiceTemplateView extends AbstractTemplateView {
     @Override
     public List<TemplateResource> getTemplateResource() {
         List<TemplateResource> resources = new ArrayList<>();
-        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/service.vm"))
+        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("service.vm"))
                 .writePath(writePath + ctx.get("className") + "Service.java").build();
-        final TemplateResource re1 = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/serviceImpl.vm"))
+        final TemplateResource re1 = TemplateResource.builder().template(ve.getTemplate("serviceImpl.vm"))
                 .writePath(writePath + ctx.get("className") + "ServiceImpl.java").build();
         resources.add(re);
         resources.add(re1);

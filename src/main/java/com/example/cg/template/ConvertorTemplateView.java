@@ -18,7 +18,7 @@ public class ConvertorTemplateView extends AbstractTemplateView {
     @Override
     public List<TemplateResource> getTemplateResource() {
         List<TemplateResource> resources = new ArrayList<>();
-        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/converter.vm"))
+        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("converter.vm"))
                 .writePath(writePath + ctx.get("className") + "Converter.java").build();
         resources.add(re);
         return resources;

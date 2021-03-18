@@ -18,9 +18,10 @@ public class DtoTemplateView extends AbstractTemplateView {
     @Override
     public List<TemplateResource> getTemplateResource() {
         List<TemplateResource> resources = new ArrayList<>();
-        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("velocityTemplate/java/dto.vm"))
+        final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("dto.vm"))
                 .writePath(writePath + ctx.get("className") + "DTO.java").build();
         resources.add(re);
         return resources;
     }
+
 }
