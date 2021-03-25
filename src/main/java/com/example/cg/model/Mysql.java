@@ -8,10 +8,12 @@ import javafx.beans.property.StringProperty;
  * @date 2021/3/12
  */
 public class Mysql {
-    private StringProperty host = new SimpleStringProperty("");
+    private StringProperty host = new SimpleStringProperty("localhost");
+
     private StringProperty user = new SimpleStringProperty("");
     private StringProperty password = new SimpleStringProperty("");
-    private StringProperty URL = new SimpleStringProperty("");
+    private StringProperty database = new SimpleStringProperty("");
+    private StringProperty URL = new SimpleStringProperty("jdbc:mysql://localhost:3306");
 
     public String getHost() {
         return host.get();
@@ -44,4 +46,13 @@ public class Mysql {
     public StringProperty URLProperty() {
         return URL;
     }
+
+    public String getDatabase() {
+        return database.get();
+    }
+
+    public StringProperty databaseProperty() {
+        return database;
+    }
+
 }

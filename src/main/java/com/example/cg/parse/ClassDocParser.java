@@ -1,7 +1,7 @@
 package com.example.cg.parse;
 
 import com.example.cg.bean.FieldEntry;
-import com.example.cg.bean.ModelClassDoc;
+import com.example.cg.bean.ModelDoc;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,30 +14,34 @@ import java.nio.file.Paths;
  * @author zhangxiaoyu
  * @date 2021/3/3
  */
-public class ClassDocParse {
+public class ClassDocParser implements Parser {
 
     private String className;
 
     private Class<?> aClass;
     private String classString;
 
-    public ClassDocParse(String className) {
+    private String packageName;
+
+    public ClassDocParser(String className) {
         this.className = className;
         init();
     }
 
-    public ModelClassDoc parse() {
-        ModelClassDoc  modelClassDoc = new ModelClassDoc();
+    @Override
+    public ModelDoc parse() {
+        ModelDoc modelDoc = new ModelDoc();
         final String simpleName = aClass.getSimpleName();
-        modelClassDoc.setName(simpleName);
-        modelClassDoc.setComment(getCommentAndClear(simpleName));
+        modelDoc.setName(simpleName);
+        modelDoc.setComment(getCommentAndClear(simpleName));
+        modelDoc.setPackageName(getPackageName());
         final Field[] fields = aClass.getDeclaredFields();
         for (Field field : fields) {
             final String fieldName = field.getName();
             final FieldEntry fieldEntry = new FieldEntry(fieldName, field.getType().getSimpleName(), getCommentAndClear(fieldName));
-            modelClassDoc.add(fieldEntry);
+            modelDoc.add(fieldEntry);
         }
-        return modelClassDoc;
+        return modelDoc;
     }
 
     private String getCommentAndClear(String simpleName) {
@@ -75,9 +79,13 @@ public class ClassDocParse {
     }
 
     public static void main(String[] args) {
-        ClassDocParse classDocParse = new ClassDocParse("com.example.cg.bean.Example");
-        ModelClassDoc modelClassDoc = classDocParse.parse();
-        System.out.println(modelClassDoc);
+        ClassDocParser classDocParse = new ClassDocParser("com.example.cg.bean.Example");
+        ModelDoc modelDoc = classDocParse.parse();
+        System.out.println(modelDoc);
     }
 
+    public String getPackageName() {
+        final String packageName0 = aClass.getPackage().getName();
+        return packageName0.substring(0, packageName0.lastIndexOf("."));
+    }
 }

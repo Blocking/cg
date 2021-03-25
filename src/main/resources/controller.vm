@@ -20,7 +20,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.Valid;
 
 /**
@@ -33,7 +33,7 @@ import javax.validation.Valid;
 @RequestMapping("/${lowerClassName}")
 public class ${className}Controller {
 
-    @Resource
+    @Autowired
     private $Service $service;
 
 
@@ -47,7 +47,7 @@ public class ${className}Controller {
     @ApiOperation(value = "${classComments}分页查询", notes = "${classComments}分页查询")
     public Result<PageInfo<$Dto>> searchPage(@Valid $pageQuery pageQuery) {
         return this.${service}.searchPage(pageQuery);
-        }
+    }
 
 
    /**

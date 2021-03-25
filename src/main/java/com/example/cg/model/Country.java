@@ -12,11 +12,10 @@ import java.time.Month;
  * @date 2021/3/10
  */
 public class Country {
-    private StringProperty name = new SimpleStringProperty("123");
+    private StringProperty name = new SimpleStringProperty("Switzerland");
     private StringProperty iso = new SimpleStringProperty("CH");
-    private StringProperty password = new SimpleStringProperty("password");
-    private StringProperty URL = new SimpleStringProperty("URL");
-//    private ObjectProperty<LocalDate> independenceDay = new SimpleObjectProperty<>(LocalDate.of(1648, Month.OCTOBER, 24));
+    private BooleanProperty independence = new SimpleBooleanProperty(true);
+    private ObjectProperty<LocalDate> independenceDay = new SimpleObjectProperty<>(LocalDate.of(1648, Month.OCTOBER, 24));
 
     private StringProperty currencyShort = new SimpleStringProperty("CHF");
     private StringProperty currencyLong = new SimpleStringProperty("Swiss Franc");
@@ -56,20 +55,20 @@ public class Country {
         return iso;
     }
 
-    public String getPassword() {
-        return password.get();
+    public boolean isIndependence() {
+        return independence.get();
     }
 
-    public StringProperty passwordProperty() {
-        return password;
+    public BooleanProperty independenceProperty() {
+        return independence;
     }
 
-    public String getURL() {
-        return URL.get();
+    public LocalDate getIndependenceDay() {
+        return independenceDay.get();
     }
 
-    public StringProperty urlProperty() {
-        return URL;
+    public ObjectProperty<LocalDate> independenceDayProperty() {
+        return independenceDay;
     }
 
     public String getCurrencyShort() {

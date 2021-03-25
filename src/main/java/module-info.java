@@ -7,4 +7,5 @@ module com.example.cg.demo {
     requires commons.lang3;
     requires slf4j.api;
     exports com.example.cg.bean;
+    exports com.example.cg.demo;
 }

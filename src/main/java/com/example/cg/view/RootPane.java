@@ -75,26 +75,26 @@ public class RootPane extends BorderPane implements ViewMixin {
      */
     @Override
     public void initializeParts() {
-        save = new Button("保存");
-        reset = new Button("重置");
+        save = new Button("Save");
+        reset = new Button("Reset");
         save.getStyleClass().add("save-button");
         reset.getStyleClass().add("reset-button");
 
         // The language buttons get a picture of the country from the flaticon
         // font in the css.
 
-        languageDE = new Button("你好");
-        languageEN = new Button("国家");
+        languageDE = new Button("\ue001");
+        languageEN = new Button("\ue000");
 
-        validLabel = new Label("表单是被校验的");
-        persistableLabel = new Label("表单数据不会被保存.");
-        changedLabel = new Label("表单数据不会被更改.");
-        countryLabel = new Label("国家: " + model.getCountry().getName());
-        currencyLabel = new Label("货币: " + model.getCountry().getCurrencyShort());
-        populationLabel = new Label("人口: " + model.getCountry().getPopulation());
+        validLabel = new Label("The form is valid.");
+        persistableLabel = new Label("The form is not persistable.");
+        changedLabel = new Label("The form has not changed.");
+        countryLabel = new Label("Country: " + model.getCountry().getName());
+        currencyLabel = new Label("Currency: " + model.getCountry().getCurrencyShort());
+        populationLabel = new Label("Population: " + model.getCountry().getPopulation());
 
-        editableToggle = new Button("切换可编辑");
-        sectionToggle = new Button("切换部分");
+        editableToggle = new Button("Toggle Editable");
+        sectionToggle = new Button("Toggle Sections");
         editableToggle.getStyleClass().add("toggle-button");
         sectionToggle.getStyleClass().add("toggle-button");
 
@@ -127,7 +127,7 @@ public class RootPane extends BorderPane implements ViewMixin {
      */
     @Override
     public void setupValueChangedListeners() {
-        model.getFormInstance().changedProperty().addListener((observable, oldValue, newValue) -> changedLabel.setText("The form has " + (newValue ? "" : "not ") + "changed."));
+        model.getFormInstance().changedProperty().addListener((observable, oldValue, newValue) -> changedLabel.setText("The form has " + (newValue) + "changed."));
         model.getFormInstance().validProperty().addListener((observable, oldValue, newValue) -> validLabel.setText("The form is " + (newValue ? "" : "not ") + "valid."));
         model.getFormInstance().persistableProperty().addListener((observable, oldValue, newValue) -> persistableLabel.setText("The form is " + (newValue ? "" : "not ") + "persistable."));
 

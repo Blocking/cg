@@ -12,11 +12,13 @@ import java.util.List;
  * @date 2021/3/3
  */
 @Data
-public class ModelClassDoc {
+public class ModelDoc {
 
     private String name;
 
     private String comment;
+
+    private String packageName;
 
     @Delegate
     List<FieldEntry> fields = new ArrayList<>(16);

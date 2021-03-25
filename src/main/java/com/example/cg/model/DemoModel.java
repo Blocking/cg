@@ -12,6 +12,7 @@ import com.dlsc.formsfx.model.validators.StringLengthValidator;
 import com.dlsc.formsfx.view.controls.SimpleCheckBoxControl;
 import com.dlsc.formsfx.view.controls.SimpleRadioButtonControl;
 import com.dlsc.formsfx.view.util.ColSpan;
+import javafx.beans.property.StringProperty;
 
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -23,7 +24,6 @@ import java.util.ResourceBundle;
 public class DemoModel {
     private Country country = new Country();
 
-    private Mysql mysql = new Mysql();
     /**
      * These are the resource bundles for german and english.
      */
@@ -57,21 +57,21 @@ public class DemoModel {
     private void createForm() {
         formInstance = Form.of(
                 Group.of(
-                        Field.ofStringType(mysql.hostProperty())
-                                .label("Host_label")
+                        Field.ofStringType(country.nameProperty())
+                                .label("country_label")
                                 .placeholder("country_placeholder")
                                 .required("required_error_message")
                                 .validate(StringLengthValidator.atLeast(2, "country_error_message")),
-                        Field.ofStringType(mysql.userProperty())
-                                .label("User_label")
+                        Field.ofStringType(country.isoProperty())
+                                .label("ISO_3166_label")
                                 .placeholder("ISO_3166_placeholder")
                                 .required("required_error_message")
                                 .validate(StringLengthValidator.exactly(2, "ISO_3166_error_message")),
-                        Field.ofStringType(mysql.passwordProperty())
-                                .label("Password_label")
+                        Field.ofBooleanType(country.independenceProperty())
+                                .label("independent_label")
                                 .required("required_error_message"),
-                        Field.ofStringType(mysql.getURL())
-                                .label("URL_label")
+                        Field.ofDate(country.getIndependenceDay())
+                                .label("independent_since_label")
                                 .required("required_error_message")
                                 .placeholder("independent_since_placeholder")
                 ),

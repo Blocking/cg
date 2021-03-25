@@ -1,8 +1,9 @@
 package com.example.cg.generate;
 
 import com.example.cg.bean.FieldEntry;
-import com.example.cg.bean.ModelClassDoc;
-import com.example.cg.parse.ClassDocParse;
+import com.example.cg.bean.ModelDoc;
+import com.example.cg.parse.ClassDocParser;
+import com.example.cg.parse.Parser;
 import com.example.cg.template.*;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +41,7 @@ public class SourceGenerate {
 
     final static String bigDecimal = "BigDecimal";
 
-    private ModelClassDoc classDoc;
+    private ModelDoc modelDoc;
 
     private TemplateProp prop;
 
@@ -48,7 +49,9 @@ public class SourceGenerate {
     private Out out = Out.CONSOLE;
 
     public enum Out{
+        //输出类型 文件
         FILE,
+        //输出类型 控制台
         CONSOLE
     }
 
@@ -61,19 +64,14 @@ public class SourceGenerate {
     public void init(String modelClassName){
         ctx = new VelocityContext();
         ve = initVe();
-        Class c = null;
-        try {
-            c = Class.forName(modelClassName);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        //base
-        final String packageName = c.getPackage().getName();
-        final String parentPackageName = packageName.substring(0, packageName.lastIndexOf("."));
+
+        Parser parser = new ClassDocParser(modelClassName);
+        modelDoc = parser.parse();
+
         ctx.put("date", LocalDate.now().toString());
         ctx.put("author", System.getProperty("user.name"));
-        ctx.put("package", parentPackageName);
-        final String simpleName = c.getSimpleName();
+        ctx.put("package", modelDoc.getPackageName());
+        final String simpleName = modelDoc.getName();
         ctx.put("className", simpleName);
         // 首字母小写
         final String initials = simpleName.substring(0, 1);
@@ -81,10 +79,8 @@ public class SourceGenerate {
         ctx.put("lowerClassName", StringUtils.lowerCase(initials).concat(other));
         ctx.put("oldProject", false);
 
-        ClassDocParse classDocParse = new ClassDocParse(modelClassName);
-         classDoc = classDocParse.parse();
-        ctx.put("classComments", classDoc.getComment());
-        final List<FieldEntry> fields = classDoc.getFields();
+        ctx.put("classComments", modelDoc.getComment());
+        final List<FieldEntry> fields = modelDoc.getFields();
         fields.forEach(field -> {
             if(date.equals(field.getFType())){
                 ctx.put("hasDate", true);

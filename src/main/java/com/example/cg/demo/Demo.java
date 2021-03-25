@@ -2,21 +2,16 @@ package com.example.cg.demo;
 
 import com.example.cg.generate.SourceGenerate;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-
 /**
  * @author zhangxiaoyu
  * @date 2021/3/5
  */
 public class Demo {
 
-    public static void main(String[] args) throws MalformedURLException, ClassNotFoundException {
+    public static void main(String[] args) {
         final String modelClassName = "com.example.cg.bean.Example";
         SourceGenerate sourceGenerate = new SourceGenerate(modelClassName);
-        sourceGenerate.setOut(SourceGenerate.Out.FILE);
+        sourceGenerate.setOut(SourceGenerate.Out.CONSOLE);
         //文件输出路径 默认是 tmp 下
         sourceGenerate.setWritePath("/tmp");
         sourceGenerate.generateDTO();
@@ -25,8 +20,6 @@ public class Demo {
         sourceGenerate.generateManager();
         sourceGenerate.generateService();
         sourceGenerate.generateController();
-
-
 
     }
 /*    public static void main(String[] args) {
