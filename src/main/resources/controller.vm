@@ -85,7 +85,7 @@ public class ${className}Controller {
     @Permission(permissionType = PermissionTypeEnum.AUTH)
     @ApiOperation(value = "修改${classComments}", notes = "修改${classComments}")
     @ApiImplicitParam(name = "updateQuery", value = "${classComments}结构体", required = true, dataTypeClass = ${editQuery}.class, paramType = "body")
-    public Result<Void> updateLegend(@RequestBody @Valid $editQuery updateQuery){
+    public Result<Void> update(@RequestBody @Valid $editQuery updateQuery){
         return this.${service}.update(updateQuery);
     }
 }

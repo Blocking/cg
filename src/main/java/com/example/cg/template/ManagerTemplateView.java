@@ -19,9 +19,9 @@ public class ManagerTemplateView extends AbstractTemplateView {
     public List<TemplateResource> getTemplateResource() {
         List<TemplateResource> resources = new ArrayList<>();
         final TemplateResource re = TemplateResource.builder().template(ve.getTemplate("manager.vm"))
-                .writePath(writePath + ctx.get("className") + "manager.java").build();
+                .writePath(writePath + ctx.get("className") + "Manager.java").build();
         final TemplateResource re1 = TemplateResource.builder().template(ve.getTemplate("managerImpl.vm"))
-                .writePath(writePath + ctx.get("className") + "managerImpl.java").build();
+                .writePath(writePath + ctx.get("className") + "ManagerImpl.java").build();
         resources.add(re);
         resources.add(re1);
         return resources;

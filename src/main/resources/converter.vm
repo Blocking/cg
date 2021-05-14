@@ -11,27 +11,25 @@ import ${package}.dto.${className}DTO;
 import ${package}.query.${className}AddQuery;
 import ${package}.query.${className}EditQuery;
 import java.util.Date;
-import org.springframework.stereotype.Component;
+import ${package}.utils.function.Converter;
 
 /**
  * $classComments
  * @author $author
  * @date $date
  */
-@Component
-public class ${className}Converter extends AbstractConvertor<${className}, $Dto> {
+public class ${className}Converter{
 
-    @Override
-    public $Dto toDTO(${className} model) {
+    public static Converter<${className},${Dto}> toDTO = model-> {
         $Dto dto = new $Dto();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
         dto.set${methodName}(model.get${methodName}());
     #end
         return dto;
-    }
+    };
 
-    public ${className} toAddModel($addQuery addQuery) {
+    public static ${className} toAddModel($addQuery addQuery) {
         ${className} model = new ${className}();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
@@ -45,7 +43,7 @@ public class ${className}Converter extends AbstractConvertor<${className}, $Dto>
         return model;
     }
 
-    public ${className} toEditModel($editQuery editQuery) {
+    public static ${className} toEditModel($editQuery editQuery) {
         ${className} model = new ${className}();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))

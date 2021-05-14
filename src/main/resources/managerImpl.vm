@@ -33,23 +33,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class ${className}ManagerImpl implements ${className}Manager {
 
     @Autowired
-    private final $Mapper $mapper;
-
-    @Autowired
-    private final $Convertor $convertor;
+    private  $Mapper $mapper;
 
     @Override
     public PageInfo<$Dto> searchPage(${className}PageQuery pageQuery) {
         final PageInfo<${className}> pageInfo = PageHelper.startPage(pageQuery.getPageNum(), pageQuery.getPageSize()).doSelectPageInfo(() ->
         this.${mapper}.findAllByNameLike(pageQuery.getName()));
-        final PageInfo<$Dto> dtoPageInfo = this.${convertor}.toPageDTO(pageInfo);
+        final PageInfo<$Dto> dtoPageInfo = ${Convertor}.toDTO.convertToPage(pageInfo)};
         return dtoPageInfo;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void add($addQuery addQuery) {
-        final ${className} model = this.${convertor}.toAddModel(addQuery);
+        final ${className} model = ${Convertor}.toAddModel(addQuery);
         this.${mapper}.insertSelective(model);
     }
     @Override
@@ -61,14 +58,14 @@ public class ${className}ManagerImpl implements ${className}Manager {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void update($editQuery editQuery) {
-        final ${className} model = this.${convertor}.toEditModel(editQuery);
+        final ${className} model = ${Convertor}.toEditModel(editQuery);
         this.${mapper}.updateByPrimaryKeySelective(model);
     }
 
     @Override
     public $Dto search(Long id) {
         final ${className} model = this.${mapper}.selectByPrimaryKey(id);
-        return this.${convertor}.toDTO(model);
+        return ${Convertor}.toDTO.convert(model);
     }
 
 }

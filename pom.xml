@@ -41,6 +41,11 @@
             <artifactId>formsfx-core</artifactId>
             <version>11.3.2</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.21</version>
+        </dependency>
     </dependencies>
 
 </project>

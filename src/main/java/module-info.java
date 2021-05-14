@@ -6,6 +6,8 @@ module com.example.cg.demo {
     requires lombok;
     requires commons.lang3;
     requires slf4j.api;
+    requires java.sql;
+    requires mysql.connector.java;
     exports com.example.cg.bean;
     exports com.example.cg.demo;
 }

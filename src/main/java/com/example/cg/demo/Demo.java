@@ -9,9 +9,9 @@ import com.example.cg.generate.SourceGenerate;
 public class Demo {
 
     public static void main(String[] args) {
-        final String modelClassName = "com.example.cg.bean.Example";
+        final String modelClassName = "com.ikongjian.dim.model.PaintWallpaperGoodsRelation";
         SourceGenerate sourceGenerate = new SourceGenerate(modelClassName);
-        sourceGenerate.setOut(SourceGenerate.Out.CONSOLE);
+        sourceGenerate.setOut(SourceGenerate.Out.FILE);
         //文件输出路径 默认是 tmp 下
         sourceGenerate.setWritePath("/tmp");
         sourceGenerate.generateDTO();
@@ -20,30 +20,6 @@ public class Demo {
         sourceGenerate.generateManager();
         sourceGenerate.generateService();
         sourceGenerate.generateController();
-
     }
-/*    public static void main(String[] args) {
-            JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-            // Compiling the code
-            int result = compiler.run(null, null, null,
-                    "/tmp/ExampleDTO.java");
-
-
-            System.out.println("result " + result);
-//             Giving the path of the class directory where class file is generated..
-            File classesDir = new File("/tmp/");
-//             Load and instantiate compiled class.
-            URLClassLoader classLoader;
-            try {
-                // Loading the class
-                classLoader = URLClassLoader.newInstance(new URL[] { classesDir.toURI().toURL() });
-                Class<?> cls = Class.forName("com.example.cg.dto.ExampleDTO", true, classLoader);
-                System.out.println(cls.getSimpleName());
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-    }*/
 
 }
