@@ -5,10 +5,8 @@ package ${package}.manager;
 #set( $editQuery = ${className}+"EditQuery")
 #set( $pageQuery = ${className}+"PageQuery")
 import com.github.pagehelper.PageInfo;
-import ${package}.dto.$Dto;
-import ${package}.query.$addQuery;
-import ${package}.query.$editQuery;
-import ${package}.query.$pageQuery;
+import ${package}.model.${className};
+import ${package}.provider.query.$pageQuery;
 
 /**
  * $classComments
@@ -19,15 +17,17 @@ public interface ${className}Manager {
     /**
      * 分页查询
      * @param pageQuery pageQuery
+     * @param pageNum 页码
+     * @param pageSize 每页显示数量
      * @return page信息
      */
-    PageInfo<$Dto> searchPage($pageQuery pageQuery);
+    PageInfo<${className}> searchPage($pageQuery pageQuery,int pageNum, int pageSize);
 
     /**
      * 新增
-     * @param addQuery 新增结构体
+     * @param model 新增结构体
      */
-    void add($addQuery addQuery);
+    ${className} add(${className} model);
 
     /**
      * 删除
@@ -37,15 +37,15 @@ public interface ${className}Manager {
 
     /**
      * 修改
-     * @param editQuery 编辑结构体
+     * @param model 编辑结构体
      */
-    void update($editQuery editQuery);
+    ${className} update(${className} model);
 
     /**
      * 查询
      * @param id 主键id
      * @return 信息
      */
-    $Dto search(Long id);
+    ${className} searchById(Long id);
 
 }

@@ -6,10 +6,10 @@ package ${package}.api;
 #set( $pageQuery = ${className}+"PageQuery")
 import com.ikongjian.commons.entity.Result;
 import com.github.pagehelper.PageInfo;
-import ${package}.dto.$Dto;
-import ${package}.query.$addQuery;
-import ${package}.query.$editQuery;
-import ${package}.query.$pageQuery;
+import ${package}.provider.dto.$Dto;
+import ${package}.provider.query.$addQuery;
+import ${package}.provider.query.$editQuery;
+import ${package}.provider.query.$pageQuery;
 
 /**
  * $classComments Service
@@ -20,16 +20,18 @@ public interface ${className}Service {
     /**
      * 分页查询
      * @param pageQuery pageQuery
+     * @param pageNum 页码
+     * @param pageSize 每页显示数量
      * @return page信息
      */
-    Result<PageInfo<$Dto>> searchPage($pageQuery pageQuery);
+    Result<PageInfo<$Dto>> searchPage($pageQuery pageQuery,int pageNum, int pageSize);
 
     /**
      * 新增
      * @param addQuery 新增结构体
      * @return result
      */
-    Result<Void> add($addQuery addQuery);
+    Result<$Dto> add($addQuery addQuery);
 
     /**
      * 删除
@@ -43,13 +45,13 @@ public interface ${className}Service {
      * @param editQuery 编辑结构体
      * @return result
      */
-    Result<Void> update($editQuery editQuery);
+    Result<$Dto> update($editQuery editQuery);
 
     /**
      * 查询
      * @param id 主键id
      * @return 信息
      */
-    Result<$Dto> search(Long id);
+    Result<$Dto> searchById(Long id);
 
 }

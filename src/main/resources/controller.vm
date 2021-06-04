@@ -1,26 +1,24 @@
 package ${package}.api.impl;
-#set( $service = ${lowerClassName}+"Service")
-#set( $Service = ${className}+"Service")
+#set( $client = ${lowerClassName}+"Client")
+#set( $Client = ${className}+"Client")
 #set( $Dto = ${className}+"DTO")
 #set( $addQuery = ${className}+"AddQuery")
 #set( $editQuery = ${className}+"EditQuery")
 #set( $pageQuery = ${className}+"PageQuery")
 
 import com.github.pagehelper.PageInfo;
-import ${package}.dto.${className}DTO;
-import ${package}.query.${className}AddQuery;
-import ${package}.query.${className}EditQuery;
-import ${package}.query.${className}PageQuery;
-import ${package}.api.${className}Service;
-import com.ikongjian.commons.annotation.Permission;
+import ${package}.provider.dto.${className}DTO;
+import ${package}.provider.query.${className}AddQuery;
+import ${package}.provider.query.${className}EditQuery;
+import ${package}.provider.query.${className}PageQuery;
+import ${package}.provider.api.${className}Service;
 import com.ikongjian.commons.entity.Result;
-import com.ikongjian.commons.enums.PermissionTypeEnum;
+import com.ikongjian.starter.log.annotation.SysLog;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import javax.validation.Valid;
 
 /**
@@ -30,11 +28,14 @@ import javax.validation.Valid;
  */
 @Api(tags = "${classComments}模块")
 @RestController
-@RequestMapping("/${lowerClassName}")
+@RequestMapping("/v1/${lowerClassName}")
 public class ${className}Controller {
 
-    @Autowired
-    private $Service $service;
+    private $Client $client;
+
+    public ${className}Controller($Client $client) {
+        this.$client = $client;
+    }
 
 
     /**
@@ -42,50 +43,52 @@ public class ${className}Controller {
      * @param pageQuery query
      * @return 分页数据
      */
-    @GetMapping
-    @Permission(permissionType = PermissionTypeEnum.AUTH)
+    @GetMapping("/page")
+    @SysLog("${classComments}分页查询")
     @ApiOperation(value = "${classComments}分页查询", notes = "${classComments}分页查询")
-    public Result<PageInfo<$Dto>> searchPage(@Valid $pageQuery pageQuery) {
-        return this.${service}.searchPage(pageQuery);
+    public Result<PageInfo<$Dto>> searchPage(@Valid $pageQuery pageQuery,
+                                             @RequestParam(value = "pageNum", required = false, defaultValue = "1") int pageNum,
+                                             @RequestParam(value = "pageSize", required = false, defaultValue = "10") int pageSize) {
+        return this.${client}.searchPage(pageQuery,pageNum,pageSize);
     }
 
 
    /**
     * 新增${classComments}
     * @param addQuery 结构体
-    * @return empty result
+    * @return ${classComments} result
     */
     @PostMapping
-    @Permission(permissionType = PermissionTypeEnum.AUTH)
-    @ApiOperation(value = "新增${classComments}", notes = "新增${classComments}")
+    @SysLog("${classComments}新增")
+    @ApiOperation(value = "${classComments}新增", notes = "${classComments}新增")
     @ApiImplicitParam(name = "addQuery", value = "${classComments}结构体", required = true, dataTypeClass = ${addQuery}.class, paramType = "body")
-    public Result<Void> add(@RequestBody @Valid $addQuery addQuery){
-        return this.${service}.add(addQuery);
+    public Result<$Dto> add(@RequestBody @Valid $addQuery addQuery){
+        return this.${client}.add(addQuery);
     }
 
     /**
-    * ${classComments}查询
+    * ${classComments}查询by ID
     * @param id 主键id
     * @return result ${classComments}
     */
     @GetMapping("/{id}")
-    @Permission(permissionType = PermissionTypeEnum.AUTH)
-    @ApiOperation(value = "${classComments}查询", notes = "${classComments}查询")
+    @SysLog("${classComments}根据ID查询")
+    @ApiOperation(value = "${classComments}根据ID查询", notes = "${classComments}根据ID查询")
     @ApiImplicitParam(name = "id", value = "${classComments}ID", required = true, dataTypeClass = Integer.class, paramType = "path")
     public Result<$Dto> searchDetail(@PathVariable Long id) {
-        return this.${service}.search(id);
+        return this.${client}.searchById(id);
     }
 
     /**
-    * 修改${classComments}
+    * ${classComments}编辑
     * @param updateQuery ${classComments}结构体
-    * @return empty result
+    * @return ${classComments} result
     */
     @PutMapping
-    @Permission(permissionType = PermissionTypeEnum.AUTH)
-    @ApiOperation(value = "修改${classComments}", notes = "修改${classComments}")
+    @SysLog("${classComments}编辑")
+    @ApiOperation(value = "${classComments}编辑", notes = "${classComments}编辑")
     @ApiImplicitParam(name = "updateQuery", value = "${classComments}结构体", required = true, dataTypeClass = ${editQuery}.class, paramType = "body")
-    public Result<Void> update(@RequestBody @Valid $editQuery updateQuery){
-        return this.${service}.update(updateQuery);
+    public Result<$Dto> update(@RequestBody @Valid $editQuery updateQuery){
+        return this.${client}.update(updateQuery);
     }
 }

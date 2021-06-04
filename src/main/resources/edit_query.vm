@@ -22,8 +22,10 @@ public class ${className}EditQuery implements Serializable {
     @NotNull(message = "id不能为空")
     @ApiModelProperty(value = "${field.fExplain}")
     private ${field.fType} ${field.fName};
-    #else
-    @ApiModelProperty(value = "${field.fExplain}")
+    #elseif($field.fName != "serialVersionUID"
+    && $field.fName != "createTime" && $field.fName != "updateTime"
+    && $field.fName != "createUserId")
+    @ApiModelProperty(value = "${field.fExplain}" #if($field.fName == "lastUpdateUserId"),hidden=true#end)
     private ${field.fType} ${field.fName};
     #end
 #end

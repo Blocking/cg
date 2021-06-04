@@ -48,6 +48,7 @@ public class SourceGenerate {
     @Setter
     private Out out = Out.CONSOLE;
 
+
     public enum Out{
         //输出类型 文件
         FILE,
@@ -131,6 +132,11 @@ public class SourceGenerate {
 
     public void generateDTO() {
         DtoTemplateView view = new DtoTemplateView(prop);
+        merge(view);
+    }
+
+    public void generateClient() {
+        ClientTemplateView view = new ClientTemplateView(prop);
         merge(view);
     }
 

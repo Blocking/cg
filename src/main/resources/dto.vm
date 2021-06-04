@@ -17,8 +17,10 @@ import java.math.BigDecimal;
 public class ${className}DTO implements Serializable {
 
     #foreach($field in $fields)
+        #if($field.fName != "serialVersionUID")
     @ApiModelProperty(value = "${field.fExplain}")
     private ${field.fType} ${field.fName};
+            #end
 
     #end
 }

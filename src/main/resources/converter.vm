@@ -7,11 +7,11 @@ package ${package}.converter;
 #set( $addQuery = ${className}+"AddQuery")
 #set( $editQuery = ${className}+"EditQuery")
 import ${package}.model.${className};
-import ${package}.dto.${className}DTO;
-import ${package}.query.${className}AddQuery;
-import ${package}.query.${className}EditQuery;
+import ${package}.provider.dto.${className}DTO;
+import ${package}.provider.query.${className}AddQuery;
+import ${package}.provider.query.${className}EditQuery;
 import java.util.Date;
-import ${package}.utils.function.Converter;
+import ${package}.converter.function.Converter;
 
 /**
  * $classComments
@@ -24,7 +24,9 @@ public class ${className}Converter{
         $Dto dto = new $Dto();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
+        #if($field.fName != "serialVersionUID")
         dto.set${methodName}(model.get${methodName}());
+        #end
     #end
         return dto;
     };
@@ -33,10 +35,8 @@ public class ${className}Converter{
         ${className} model = new ${className}();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
-        #if($field.fName =="id" || $field.fName == "updateTime")
-        #elseif($field.fName == "createTime")
-        model.set${methodName}(new Date());
-        #else
+        #if($field.fName !="id" && $field.fName != "createTime" && $field.fName != "createUserId"
+        && $field.fName != "lastUpdateUserId" && $field.fName != "updateTime" && $field.fName != "serialVersionUID")
         model.set${methodName}(addQuery.get${methodName}());
         #end
     #end
@@ -47,10 +47,8 @@ public class ${className}Converter{
         ${className} model = new ${className}();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
-        #if($field.fName == "createTime")
-        #elseif($field.fName == "updateTime")
-        model.set${methodName}(new Date());
-        #else
+        #if($field.fName != "createTime" && $field.fName != "createUserId"
+        && $field.fName != "lastUpdateUserId" && $field.fName != "updateTime" && $field.fName != "serialVersionUID")
         model.set${methodName}(editQuery.get${methodName}());
         #end
     #end

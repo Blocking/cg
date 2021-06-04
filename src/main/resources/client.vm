@@ -1,0 +1,69 @@
+package com.ikongjian.mdm.client.base;
+#set( $service = ${lowerClassName}+"Service")
+#set( $Service = ${className}+"Service")
+#set( $Dto = ${className}+"DTO")
+#set( $addQuery = ${className}+"AddQuery")
+#set( $editQuery = ${className}+"EditQuery")
+#set( $pageQuery = ${className}+"PageQuery")
+
+import com.github.pagehelper.PageInfo;
+import ${package}.provider.dto.${className}DTO;
+import ${package}.provider.query.${className}AddQuery;
+import ${package}.provider.query.${className}EditQuery;
+import ${package}.provider.query.${className}PageQuery;
+import ${package}.provider.api.${className}Service;
+import com.ikongjian.commons.entity.Result;
+import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.stereotype.Component;
+
+/**
+ * $classComments client
+ * @author $author
+ * @date $date
+ */
+@Component
+public class ${className}Client {
+
+    @DubboReference(url = "${dubbo.reference.url.base}")
+    private $Service $service;
+
+
+    /**
+     * 分页查询
+     * @param pageQuery query
+     * @param pageNum 页码
+     * @param pageSize 每页大小
+     * @return 分页数据
+     */
+    public Result<PageInfo<$Dto>> searchPage($pageQuery pageQuery,int pageNum,int pageSize) {
+        return this.${service}.searchPage(pageQuery,pageNum,pageSize);
+    }
+
+
+   /**
+    * 新增${classComments}
+    * @param addQuery 结构体
+    * @return 持久化之后的${classComments}
+    */
+    public Result<$Dto> add($addQuery addQuery){
+        return this.${service}.add(addQuery);
+    }
+
+    /**
+    * ${classComments}查询by ID
+    * @param id 主键id
+    * @return result ${classComments}
+    */
+    public Result<$Dto> searchById(Long id) {
+        return this.${service}.searchById(id);
+    }
+
+    /**
+    * ${classComments}编辑
+    * @param updateQuery ${classComments}结构体
+    * @return 持久化后的${classComments}
+    */
+    public Result<$Dto> update($editQuery updateQuery){
+        return this.${service}.update(updateQuery);
+    }
+}

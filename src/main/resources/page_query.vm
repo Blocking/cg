@@ -2,6 +2,7 @@ package ${package}.query;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 @ToString
 @ApiModel(description = "${classComments}查询Query")
-public class ${className}PageQuery extends AbstractPageQuery {
+public class ${className}PageQuery implements Serializable {
 
     @NotNull(message = "名称不能为空")
     @ApiModelProperty(value = "名称")

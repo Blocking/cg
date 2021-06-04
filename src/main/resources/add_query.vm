@@ -16,9 +16,12 @@ import java.math.BigDecimal;
 @Data
 public class ${className}AddQuery implements Serializable {
 #foreach($field in $fields)
-    #if($field.fName != "id")
+    #if($field.fName != "id" && $field.fName != "serialVersionUID"
+    && $field.fName != "createTime" && $field.fName != "updateTime"
+    && $field.fName != "lastUpdateUserId"
+    )
 
-    @ApiModelProperty(value = "${field.fExplain}")
+    @ApiModelProperty(value = "${field.fExplain}" #if($field.fName == "createUserId"),hidden=true#end)
     private ${field.fType} ${field.fName};
     #end
 #end
