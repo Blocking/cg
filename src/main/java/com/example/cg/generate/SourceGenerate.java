@@ -89,6 +89,15 @@ public class SourceGenerate {
             if(bigDecimal.equals(field.getFType())){
                 ctx.put("hasBigDecimal", true);
             }
+            if("deleted".equals(field.getFName()) || "isDeleted".equals(field.getFName())){
+                ctx.put("isDeleted", true);
+            }
+            if("enabled".equals(field.getFName()) || "isEnabled".equals(field.getFName())){
+                ctx.put("isEnabled", true);
+            }
+            if("sort".equals(field.getFName())){
+                ctx.put("sort", true);
+            }
         });
         ctx.put("fields", fields);
         prop = new TemplateProp();
@@ -132,6 +141,11 @@ public class SourceGenerate {
 
     public void generateDTO() {
         DtoTemplateView view = new DtoTemplateView(prop);
+        merge(view);
+    }
+
+    public void generateBO() {
+        BoTemplateView view = new BoTemplateView(prop);
         merge(view);
     }
 

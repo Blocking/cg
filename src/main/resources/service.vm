@@ -6,10 +6,10 @@ package ${package}.api;
 #set( $pageQuery = ${className}+"PageQuery")
 import com.ikongjian.commons.entity.Result;
 import com.github.pagehelper.PageInfo;
-import ${package}.provider.dto.$Dto;
-import ${package}.provider.query.$addQuery;
-import ${package}.provider.query.$editQuery;
-import ${package}.provider.query.$pageQuery;
+import ${package}.dto.$Dto;
+import ${package}.query.$addQuery;
+import ${package}.query.$editQuery;
+import ${package}.query.$pageQuery;
 
 /**
  * $classComments Service

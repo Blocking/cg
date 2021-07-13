@@ -4,9 +4,10 @@ package ${package}.manager;
 #set( $addQuery = ${className}+"AddQuery")
 #set( $editQuery = ${className}+"EditQuery")
 #set( $pageQuery = ${className}+"PageQuery")
+#set( $Bo = ${className}+"BO")
 import com.github.pagehelper.PageInfo;
 import ${package}.model.${className};
-import ${package}.provider.query.$pageQuery;
+import ${package}.bo.${Bo};
 
 /**
  * $classComments
@@ -16,18 +17,19 @@ import ${package}.provider.query.$pageQuery;
 public interface ${className}Manager {
     /**
      * 分页查询
-     * @param pageQuery pageQuery
+     * @param bo bo
      * @param pageNum 页码
      * @param pageSize 每页显示数量
      * @return page信息
      */
-    PageInfo<${className}> searchPage($pageQuery pageQuery,int pageNum, int pageSize);
+    PageInfo<${className}> searchPage($Bo bo,int pageNum, int pageSize);
 
     /**
      * 新增
-     * @param model 新增结构体
+     * @param bo 新增结构体
+     * @return 持久后数据
      */
-    ${className} add(${className} model);
+    ${className} add($Bo bo);
 
     /**
      * 删除
@@ -37,9 +39,10 @@ public interface ${className}Manager {
 
     /**
      * 修改
-     * @param model 编辑结构体
+     * @param bo 编辑结构体
+     * @return 持久后数据
      */
-    ${className} update(${className} model);
+    ${className} update($Bo bo);
 
     /**
      * 查询

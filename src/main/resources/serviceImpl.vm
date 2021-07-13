@@ -4,16 +4,20 @@ package ${package}.api.impl;
 #set( $Dto = ${className}+"DTO")
 #set( $addQuery = ${className}+"AddQuery")
 #set( $editQuery = ${className}+"EditQuery")
+#set( $Converter = ${className}+"Converter")
 import com.github.pagehelper.PageInfo;
 import ${package}.model.${className};
-import ${package}.provider.dto.${className}DTO;
-import ${package}.provider.query.${className}AddQuery;
-import ${package}.provider.query.${className}EditQuery;
-import ${package}.provider.query.${className}PageQuery;
-import ${package}.provider.api.${className}Service;
+import ${package}.dto.${className}DTO;
+import ${package}.query.${className}AddQuery;
+import ${package}.query.${className}EditQuery;
+import ${package}.query.${className}PageQuery;
+import ${package}.service.${className}Service;
 import ${package}.manager.${className}Manager;
 import ${package}.converter.${className}Converter;
+import ${package}.bo.${Bo};
 import com.ikongjian.commons.entity.Result;
+import com.ikongjian.commons.enums.ResultCodeEnum;
+import com.ikongjian.commons.exception.CommonException;
 import com.ikongjian.starter.log.annotation.SysLog;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -40,9 +44,11 @@ public class ${className}ServiceImpl implements ${className}Service {
     @SysLog("${classComments}分页查询")
     public Result<PageInfo<$Dto>> searchPage(${className}PageQuery pageQuery,int pageNum, int pageSize) {
         try {
-            final PageInfo<${className}> pageInfo = this.${manager}.searchPage(pageQuery,pageNum,pageSize);
+            final ${className}BO bo = ${Convertor}.toBO(pageQuery);
+            final PageInfo<${className}> pageInfo = this.${manager}.searchPage(bo,pageNum,pageSize);
             return ${Convertor}.toDTO.convertToResult(pageInfo);
-        } catch (IllegalArgumentException exception) {
+        } catch (CommonException exception) {
+            log.error(ExceptionUtils.getStackTrace(exception));
             return Result.fail(exception.getMessage());
         } catch (Exception e) {
             log.error(ExceptionUtils.getStackTrace(e));
@@ -54,10 +60,11 @@ public class ${className}ServiceImpl implements ${className}Service {
     @SysLog("新增${classComments}")
     public Result<$Dto> add($addQuery addQuery) {
         try {
-            final ${className} model = ${Convertor}.toAddModel(addQuery);
-            final ${className} modelN = this.${manager}.add(model);
+            final ${className}BO bo = ${Convertor}.toBO(addQuery);
+            final ${className} modelN = this.${manager}.add(bo);
             return ${Convertor}.toDTO.convertToResult(modelN);
-        } catch (IllegalArgumentException exception) {
+        } catch (CommonException exception) {
+            log.error(ExceptionUtils.getStackTrace(exception));
             return Result.fail(exception.getMessage());
         } catch (Exception e) {
             log.error(ExceptionUtils.getStackTrace(e));
@@ -70,7 +77,8 @@ public class ${className}ServiceImpl implements ${className}Service {
         try {
             this.${manager}.deleteById(id);
             return Result.empty();
-        } catch (IllegalArgumentException exception) {
+        } catch (CommonException exception) {
+            log.error(ExceptionUtils.getStackTrace(exception));
             return Result.fail(exception.getMessage());
         } catch (Exception e) {
             log.error(ExceptionUtils.getStackTrace(e));
@@ -82,10 +90,11 @@ public class ${className}ServiceImpl implements ${className}Service {
     @SysLog("修改${classComments}")
     public Result<$Dto> update($editQuery editQuery) {
         try {
-            final ${className} modelO = ${Convertor}.toEditModel(editQuery);
-            final ${className} modelN = this.${manager}.update(modelO);
+            final ${className}BO bo = ${Convertor}.toBO(editQuery);
+            final ${className} modelN = this.${manager}.update(bo);
             return ${Convertor}.toDTO.convertToResult(modelN);
-        } catch (IllegalArgumentException exception) {
+        } catch (CommonException exception) {
+            log.error(ExceptionUtils.getStackTrace(exception));
             return Result.fail(exception.getMessage());
         } catch (Exception e) {
             log.error(ExceptionUtils.getStackTrace(e));
@@ -99,7 +108,8 @@ public class ${className}ServiceImpl implements ${className}Service {
         try {
             final ${className} model = this.${manager}.searchById(id);
             return ${Convertor}.toDTO.convertToResult(model);
-        } catch (IllegalArgumentException exception) {
+        } catch (CommonException exception) {
+            log.error(ExceptionUtils.getStackTrace(exception));
             return Result.fail(exception.getMessage());
         } catch (Exception e) {
             log.error(ExceptionUtils.getStackTrace(e));

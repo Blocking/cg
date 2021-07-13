@@ -6,16 +6,20 @@ package ${package}.manager.impl;
 #set( $Dto = ${className}+"DTO")
 #set( $addQuery = ${className}+"AddQuery")
 #set( $editQuery = ${className}+"EditQuery")
+#set( $Bo = ${className}+"BO")
+#set( $complexBo = ${className}+"ComplexBO")
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ikongjian.commons.exception.CommonException;
 import ${package}.model.${className};
-import ${package}.provider.query.${className}PageQuery;
+import ${package}.bo.${Bo};
 #if($oldProject)
 import ${package}.dao.$Mapper;
 #else
 import ${package}.mapper.$Mapper;
 #end
 import ${package}.manager.${className}Manager;
+import ${package}.converter.${className}Converter;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,35 +38,44 @@ public class ${className}ManagerImpl implements ${className}Manager {
     }
 
     @Override
-    public PageInfo<${className}> searchPage(${className}PageQuery pageQuery,int pageNum, int pageSize) {
-        final PageInfo<${className}> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() ->
-        this.${mapper}.findAllByNameLike(pageQuery.getName()));
-        return pageInfo;
+    public PageInfo<${className}> searchPage(${Bo} bo,int pageNum, int pageSize) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() ->
+        this.${mapper}.findByAll(bo));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ${className} add(${className} model) {
+    public ${className} add(${Bo} bo) {
+         final ${className} model = ${className}Converter.boToModel(bo);
          this.${mapper}.insertSelective(model);
          return model;
     }
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(Long id) {
+        #if(${isDeleted})
+        final ${className} model = this.${mapper}.selectByPrimaryKey(id);
+        if (model == null) {
+            throw new CommonException("资源:" + id + "不存在");
+        }
+        model.setDeleted(Boolean.TRUE);
+        this.${mapper}.updateByPrimaryKeySelective(model);
+        #else
         this.${mapper}.deleteByPrimaryKey(id);
+        #end
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public ${className} update(${className} model) {
+    public ${className} update(${Bo} bo) {
+        final ${className} model = ${className}Converter.boToModel(bo);
         this.${mapper}.updateByPrimaryKeySelective(model);
         return model;
     }
 
     @Override
     public ${className} searchById(Long id) {
-        final ${className} model = this.${mapper}.selectByPrimaryKey(id);
-        return model;
+        return this.${mapper}.selectByPrimaryKey(id);
     }
 
 }

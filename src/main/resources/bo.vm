@@ -1,0 +1,26 @@
+package ${package}.bo;
+import lombok.Data;
+import java.io.Serializable;
+#if( $hasDate )
+import java.util.Date;
+#end
+#if( $hasBigDecimal )
+import java.math.BigDecimal;
+#end
+/**
+ * $classComments
+ * @author $author
+ * @date $date
+ */
+@Data
+public class ${className}BO {
+    #foreach($field in $fields)
+        #if($field.fName != "serialVersionUID")
+   /**
+    *  ${field.fExplain}
+    */
+    private ${field.fType} ${field.fName};
+            #end
+
+    #end
+}

@@ -74,7 +74,7 @@ public class ${className}Controller {
     @GetMapping("/{id}")
     @SysLog("${classComments}根据ID查询")
     @ApiOperation(value = "${classComments}根据ID查询", notes = "${classComments}根据ID查询")
-    @ApiImplicitParam(name = "id", value = "${classComments}ID", required = true, dataTypeClass = Integer.class, paramType = "path")
+    @ApiImplicitParam(name = "id", value = "${classComments}ID", required = true, dataTypeClass = Long.class, paramType = "path")
     public Result<$Dto> searchDetail(@PathVariable Long id) {
         return this.${client}.searchById(id);
     }

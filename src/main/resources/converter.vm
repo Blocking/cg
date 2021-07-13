@@ -6,12 +6,15 @@ package ${package}.converter;
 #set( $Dto = ${className}+"DTO")
 #set( $addQuery = ${className}+"AddQuery")
 #set( $editQuery = ${className}+"EditQuery")
+#set( $pageQuery = ${className}+"PageQuery")
 import ${package}.model.${className};
-import ${package}.provider.dto.${className}DTO;
-import ${package}.provider.query.${className}AddQuery;
-import ${package}.provider.query.${className}EditQuery;
+import ${package}.dto.${className}DTO;
+import ${package}.query.${className}AddQuery;
+import ${package}.query.${className}EditQuery;
+import ${package}.query.${className}PageQuery;
+import ${package}.bo.${className}BO;
 import java.util.Date;
-import ${package}.converter.function.Converter;
+import ${package}.util.function.Converter;
 
 /**
  * $classComments
@@ -30,29 +33,44 @@ public class ${className}Converter{
     #end
         return dto;
     };
-
-    public static ${className} toAddModel($addQuery addQuery) {
+    public static ${className} boToModel(${className}BO bo){
         ${className} model = new ${className}();
+    #foreach($field in $fields)
+        #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
+        #if($field.fName != "serialVersionUID")
+        model.set${methodName}(bo.get${methodName}());
+        #end
+    #end
+        return model;
+    };
+
+    public static ${className}BO toBO($addQuery addQuery) {
+        ${className}BO bo = new ${className}BO();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
         #if($field.fName !="id" && $field.fName != "createTime" && $field.fName != "createUserId"
         && $field.fName != "lastUpdateUserId" && $field.fName != "updateTime" && $field.fName != "serialVersionUID")
-        model.set${methodName}(addQuery.get${methodName}());
+        bo.set${methodName}(addQuery.get${methodName}());
         #end
     #end
-        return model;
+        return bo;
     }
 
-    public static ${className} toEditModel($editQuery editQuery) {
-        ${className} model = new ${className}();
+    public static ${className}BO toBO($editQuery editQuery) {
+        ${className}BO bo = new ${className}BO();
     #foreach($field in $fields)
         #set($methodName = $field.fName.substring(0,1).toUpperCase() + $field.fName.substring(1))
         #if($field.fName != "createTime" && $field.fName != "createUserId"
         && $field.fName != "lastUpdateUserId" && $field.fName != "updateTime" && $field.fName != "serialVersionUID")
-        model.set${methodName}(editQuery.get${methodName}());
+        bo.set${methodName}(editQuery.get${methodName}());
         #end
     #end
-        return model;
+        return bo;
+    }
+
+    public static ${className}BO toBO($pageQuery pageQuery) {
+        ${className}BO bo = new ${className}BO();
+        return bo;
     }
 
 }
